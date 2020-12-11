@@ -9,7 +9,7 @@ def on_press(key):
     try:
         string.value+=str(key.char)
     except AttributeError:
-        string.value+=" "+str(key).split(".")[1]
+        string.value+=" "+str(key).split(".")[1]+" "
     if len(string.value)>93:
         string.value=""
 
