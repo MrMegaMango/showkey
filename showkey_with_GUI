@@ -1,0 +1,45 @@
+import tkinter as tk
+import multiprocessing
+from multiprocessing import Manager
+from ctypes import c_char_p
+from pynput.keyboard import Listener
+
+def on_press(key):
+    try:
+        string.value+=str(key.char)
+    except AttributeError:
+        string.value+=" "+str(key).split(".")[1]
+    if len(string.value)>93:
+        string.value=""
+
+def start_listen(string):
+    with Listener(on_press=on_press) as listener:
+        listener.join()
+
+def gui(string):
+    def update_status():
+        root.lift()
+        status["text"] = string.value
+        root.after(1, update_status)
+
+    root = tk.Tk()
+    root.title("mango key show")
+    canvas = tk.Canvas(root, height=30, width=700, bg="#263D42")
+    status = tk.Label(root, text="Working")
+    status.place(x=0, y=0)
+    canvas.pack()
+    root.wm_attributes("-topmost",1)
+    # Launch the status message after 1 millisecond (when the window is loaded)
+    root.after(1, update_status)
+    root.lift()
+    root.mainloop()
+
+manager=Manager()
+string=manager.Value(c_char_p,"Hi")
+
+p1 = multiprocessing.Process(target=gui,args=(string,))
+p2 = multiprocessing.Process(target=start_listen,args=(string,))
+p2.start()
+p1.start()
+
+p1.join()
