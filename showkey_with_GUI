@@ -4,6 +4,7 @@ from multiprocessing import Manager
 from ctypes import c_char_p
 from pynput.keyboard import Listener
 #sudo apt-get installl python3-tk
+#pip3 install pynput
 
 def on_press(key):
     try:
